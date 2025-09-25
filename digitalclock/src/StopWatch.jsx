@@ -1,25 +1,21 @@
-// src/StopWatch.jsx
 import React, { useState, useEffect, useRef } from 'react';
 
 function StopWatch() {
   const [isRunning, setIsRunning] = useState(false);
-  const [elapsedTime, setElapsedTime] = useState(0); // milliseconds
+  const [elapsedTime, setElapsedTime] = useState(0); 
   const intervalIdRef = useRef(null);
   const startTimeRef = useRef(0);
 
   useEffect(() => {
     if (isRunning) {
-      // Start interval updating elapsedTime from startTimeRef
       intervalIdRef.current = setInterval(() => {
         setElapsedTime(Date.now() - startTimeRef.current);
-      }, 10); // 10ms resolution
+      }, 10); 
     } else {
-      // ensure interval is cleared when not running
       clearInterval(intervalIdRef.current);
       intervalIdRef.current = null;
     }
 
-    // cleanup on unmount or isRunning change
     return () => {
       clearInterval(intervalIdRef.current);
       intervalIdRef.current = null;
@@ -27,7 +23,6 @@ function StopWatch() {
   }, [isRunning]);
 
   function start() {
-    // set start time so that we continue from previous elapsedTime
     startTimeRef.current = Date.now() - elapsedTime;
     setIsRunning(true);
   }
@@ -47,12 +42,11 @@ function StopWatch() {
   }
 
   function formatTime() {
-    // elapsedTime is in milliseconds
     const totalMilliseconds = elapsedTime;
     const hours = Math.floor(totalMilliseconds / (1000 * 60 * 60));
     const minutes = Math.floor((totalMilliseconds / (1000 * 60)) % 60);
     const seconds = Math.floor((totalMilliseconds / 1000) % 60);
-    const centiseconds = Math.floor((totalMilliseconds % 1000) / 10); // two-digit hundredths
+    const centiseconds = Math.floor((totalMilliseconds % 1000) / 10); 
 
     return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}:${pad(centiseconds, 2)}`;
   }
